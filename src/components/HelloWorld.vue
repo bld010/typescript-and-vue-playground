@@ -2,11 +2,7 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
+      This is text on the HelloWorld component
     </p>
   </div>
 </template>
@@ -35,5 +31,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.hello {
+  background-color: #b5eed4;
 }
 </style>
