@@ -1,30 +1,60 @@
 <template>
   <div class="daily-input">
     <h1>Rate your day</h1>
-    <ul>
-      <li v-for="adjective in adjectives" v-bind:key="adjective.index">
-        <button>{{ adjective }}</button>
-      </li>
-    </ul>
     <form>
-      <input v-model="note" placeholder="Notes" />
+      <ul>
+        <li v-for="rating in ratings" v-bind:key="rating.index">
+          <button
+            v-on:click.prevent="updateRating(rating)"
+            v-bind:class="{ selected: selectedRating == rating }"
+          >
+            {{ rating }}
+          </button>
+        </li>
+      </ul>
+      <textarea v-model="note" placeholder="Notes" />
       <button v-on:click.prevent="addNote">Add Note</button>
+      <p v-if="errorIsPresent">{{ error }}</p>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import adjectives from "../mocks";
+import ratings from "../mocks";
+import Day from "../day";
 
 @Component
 export default class DailyInput extends Vue {
   @Prop() private msg!: string;
-  private adjectives: string[] = adjectives;
+  private ratings: string[] = ratings;
   private note = "";
+  private selectedRating = "";
+  private ratingIsSelected = false;
+  private error = "";
+  private errorIsPresent = false;
   private addNote() {
-    this.$emit("updateList", this.note);
+    if (this.selectedRating === "") {
+      this.addError("Please select a rating.");
+      this.errorIsPresent = true;
+    } else {
+      const day = new Day(Date.now(), this.note, this.selectedRating);
+      this.$emit("updateList", day);
+      this.resetNoteAndRating();
+    }
+  }
+  private resetNoteAndRating() {
     this.note = "";
+    this.selectedRating = "";
+    this.ratingIsSelected = false;
+    this.error = "";
+  }
+  private updateRating(rating: string) {
+    this.selectedRating = rating;
+    this.ratingIsSelected = true;
+  }
+  private addError(errorText: string) {
+    this.error = errorText;
   }
 }
 </script>
@@ -34,9 +64,30 @@ export default class DailyInput extends Vue {
 h3 {
   margin: 40px 0 0;
 }
+form {
+  & button {
+    width: 30%;
+    margin: 20px auto;
+  }
+  & ul button {
+    width: 40px;
+    margin: 0;
+  }
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: auto;
+  & textarea {
+    height: 100px;
+  }
+}
+.selected {
+  box-shadow: 2px 2px 0px #42b983;
+}
+
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 10px;
 }
 li {
   display: inline-block;

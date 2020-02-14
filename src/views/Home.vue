@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Random image" src="https://picsum.photos/200" />
+    <div class="image">
+      <img alt="Random image" src="https://picsum.photos/200" />
+    </div>
     <DailyInput
       msg="This is a prop passed to the DailyInput from the Home view"
       @updateList="updateList"
@@ -22,7 +24,7 @@ export default {
   },
   data() {
     return {
-      notes: ["hi", "hey", "hello", "yo"]
+      notes: []
     };
   },
   methods: {
@@ -35,3 +37,11 @@ export default {
   }
 };
 </script>
+
+<style scoped lang="scss">
+.image {
+  height: 200px;
+  width: 200px;
+  margin: 20px auto;
+}
+</style>
