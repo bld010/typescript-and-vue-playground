@@ -1,14 +1,14 @@
 <template>
   <div class="daily-input">
-    <h1>{{ note }}</h1>
-    <p>
-      Rate your day
-      <ul>
-        <li v-for="adjective in adjectives" v-bind:key="adjective.index"><button>{{adjective}}</button></li>
-      </ul>
-    </p>
+    <h1>Rate your day</h1>
+    <ul>
+      <li v-for="adjective in adjectives" v-bind:key="adjective.index">
+        <button>{{ adjective }}</button>
+      </li>
+    </ul>
     <form>
       <input v-model="note" placeholder="Notes" />
+      <button v-on:click.prevent="addNote">Add Note</button>
     </form>
   </div>
 </template>
@@ -22,6 +22,10 @@ export default class DailyInput extends Vue {
   @Prop() private msg!: string;
   private adjectives: string[] = adjectives;
   private note = "";
+  private addNote() {
+    this.$emit("updateList", this.note);
+    this.note = "";
+  }
 }
 </script>
 

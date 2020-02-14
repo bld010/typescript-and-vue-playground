@@ -1,22 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="This is a prop passed to HelloWorld from the Home view" />
-    <DailyInput msg="This is a prop passed to the DailyInput from the Home view" />
-    <h2>Here's another static element. on the Home view</h2>
+    <img alt="Random image" src="https://picsum.photos/200" />
+    <DailyInput
+      msg="This is a prop passed to the DailyInput from the Home view"
+      @updateList="updateList"
+    />
+    <EntryList @deleteNote="deleteNote" v-bind:notes="this.notes" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import EntryList from "@/components/EntryList.vue";
 import DailyInput from "@/components/DailyInput.vue";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    EntryList,
     DailyInput
+  },
+  data() {
+    return {
+      notes: ["hi", "hey", "hello", "yo"]
+    };
+  },
+  methods: {
+    updateList(newItem) {
+      this.notes.push(newItem);
+    },
+    deleteNote(noteToDelete) {
+      this.notes = this.notes.filter(note => note != noteToDelete);
+    }
   }
 };
 </script>
